@@ -42,10 +42,9 @@ const userSchema = new mongoose.Schema(
 
 // Prevent rehashing of password if password is not modified
 // Presave hook to hash password before saving to database
-const User = mongoose.models("User", userSchema);
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
-    next();
+    return next();
   }
   try {
     const salt = await bcrypt.genSalt(10);
@@ -60,5 +59,7 @@ userSchema.pre("save", async function (next) {
 userSchema.methods.matchPassword = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
+
+const User = mongoose.model("User", userSchema);
 
 export default User;
