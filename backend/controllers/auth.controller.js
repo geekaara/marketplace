@@ -12,10 +12,6 @@ const generateTokens = (id) => {
   return { accessToken, refreshToken };
 };
 
-const verifyToken = (token, secret) => {
-  return jwt.verify(token, secret);
-};
-
 const storeRefreshToken = async (userId, refreshToken) => {
   await redis.set(
     `refreshToken:${userId}`,
